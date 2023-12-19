@@ -1,0 +1,92 @@
+-- Shelter Table
+CREATE TABLE Shelter (
+    ShelterID INT PRIMARY KEY auto_increment,
+    Name VARCHAR(255),
+    Location POINT ,
+    MaxCapacity INT
+);
+---Service Table
+CREATE TABLE Service (
+    ServiceID INT AUTO_INCREMENT PRIMARY KEY auto_increment,
+    ServiceName VARCHAR(255),
+    InspectionFrequency INT
+);
+
+-- ShelterService Table
+CREATE TABLE ShelterService (
+    ShelterID INT,
+    ServiceID INT,
+    PRIMARY KEY (ShelterID, ServiceID),
+    FOREIGN KEY (ShelterID) REFERENCES Shelter(ShelterID),
+    FOREIGN KEY (ServiceID) REFERENCES Service(ServiceID)
+);
+
+-- Occupancy Table
+CREATE TABLE Occupancy (
+    OccupancyID INT PRIMARY KEY auto_increment,
+    ShelterID INT,
+    Date DATE,
+    Occupancy INT
+);
+
+-- Staff Table
+CREATE TABLE Staff (
+    StaffID INT PRIMARY KEY auto_increment,
+    Name VARCHAR(255),
+    Volunteer BOOLEAN,
+    Manager VARCHAR(255)
+);
+
+-- StaffService Table
+CREATE TABLE StaffService (
+    StaffID INT,
+    ServiceID INT,
+    PRIMARY KEY (StaffID, ServiceID),
+    FOREIGN KEY (StaffID) REFERENCES Staff(StaffID),
+    FOREIGN KEY (ServiceID) REFERENCES Service(ServiceID)
+);
+
+-- Donor Table
+CREATE TABLE Donor (
+    DonorID INT PRIMARY KEY auto_increment,
+    Name VARCHAR(255),
+    Location POINT,
+    DonorType VARCHAR(50)
+);
+
+-- Donation Table
+CREATE TABLE Donation (
+    DonationID INT PRIMARY KEY auto_increment,
+    DonorID INT,
+    ProgramID INT,
+    Date DATE,
+    Amount INT
+);
+-- FundsDisbursement Table
+CREATE TABLE FundsDisbursement (
+    DisbursementID INT PRIMARY KEY auto_increment,
+    ShelterID INT,
+    Date DATE,
+    Amount INT
+);
+-- PointTable
+CREATE TABLE PointTable (
+    PointID INT PRIMARY KEY auto_increment,
+    X INT,
+    Y INT
+);
+
+-- LocationTable using PointTable
+CREATE TABLE LocationTable (
+    LocationID INT PRIMARY KEY auto_increment,
+    PointID INT,
+    FOREIGN KEY (PointID) REFERENCES PointTable(PointID)
+);
+
+-- FundingProgram Table
+CREATE TABLE FundingProgram (
+    ProgramID INT PRIMARY KEY auto_increment,
+    DonorID INT,
+    ProgramName VARCHAR(255),
+    FOREIGN KEY (DonorID) REFERENCES Donor(DonorID)
+);
